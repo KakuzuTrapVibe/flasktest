@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
@@ -12,10 +12,11 @@ mysql = MySQL(app)
 def hello_world():
     return 'Hello, World!'
 
-@app.route('/getPets/<userId>', methods=['GET'])
-def getPets(userID):
+@app.route('/getPets', methods=['GET'])
+def getPets():
+    idDono = request.args.get('idDono')
     cur = mysql.connection.cursor()
-    cur.execute(f"""SELECT * from Pets WHERE idDono='{str(userID)}'""")
+    cur.execute("""SELECT * from Pets WHERE idDono='""" + str(idDono) + """'""")
     rv = cur.fetchall()
     return jsonify(rv)
 
