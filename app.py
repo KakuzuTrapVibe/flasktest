@@ -17,7 +17,7 @@ def get_data():
     cur = mysql.connection.cursor()
     cur.execute("""SELECT * from Pets""")
     rv = cur.fetchall()
-    return jsonify(rv)
+    return rv
 
 if __name__ == '__main__':
     app.run(debug=True)
