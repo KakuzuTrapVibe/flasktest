@@ -20,6 +20,16 @@ def getPets():
     rv = cur.fetchall()
     return jsonify(rv)
 
+@app.route('/login', methods=['GET'])
+def Login():
+    email = request.args.get('email')
+    senha = request.args.get('senha')
+    
+    cur = mysql.connection.cursor()
+    cur.execute("""SELECT * from Usuarios WHERE email='""" + str(email) + """' AND  senha='""" + str(senha) + """'""")
+    user = cur.fetchone()
+    return jsonify(user)
+
 if __name__ == '__main__':
     app.run(debug=True)
     
