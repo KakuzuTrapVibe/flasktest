@@ -12,10 +12,10 @@ mysql = MySQL(app)
 def hello_world():
     return 'Hello, World!'
 
-@app.route('/getPets', methods=['GET'])
-def get_data():
+@app.route('/getPets/<userId>', methods=['GET'])
+def getPets(userID):
     cur = mysql.connection.cursor()
-    cur.execute("""SELECT * from Pets where idDono = 1""")
+    cur.execute(f"""SELECT * from Pets WHERE idDono='{str(userID)}'""")
     rv = cur.fetchall()
     return jsonify(rv)
 
