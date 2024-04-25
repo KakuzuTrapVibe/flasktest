@@ -15,9 +15,9 @@ def hello_world():
 @app.route('/getPets', methods=['GET'])
 def get_data():
     cur = mysql.connection.cursor()
-    cur.execute("""SELECT * from Pets""")
+    cur.execute("""SELECT * from Pets where idDono = 1""")
     rv = cur.fetchall()
-    return rv
+    return jsonify(rv)
 
 if __name__ == '__main__':
     app.run(debug=True)
