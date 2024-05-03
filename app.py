@@ -30,6 +30,18 @@ def Login():
     user = cur.fetchone()
     return jsonify(user)
 
+@app.route('/cadastro', methods=['POST'])
+def Cadastro():
+    nome = request.args.get('nome')
+    endereco = request.args.get('endereco')
+    cep = request.args.get('cep')
+    email = request.args.get('email')
+    senha = request.args.get('senha')
+    
+    cur = mysql.connection.cursor()
+    cur.execute("""INSERT INTO Usuarios VALUES ('""" + str(nome) + """','""" + str(endereco) + """','""" + str(cep) + """','""" + str(email)+ """','""" + str(senha)+ """')""")
+    return jsonify("Cadastro concluído")
+
 if __name__ == '__main__':
     app.run(debug=True)
     
