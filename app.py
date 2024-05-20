@@ -2,10 +2,10 @@ from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
-app.config['MYSQL_HOST'] = 'sql10.freemysqlhosting.net'
-app.config['MYSQL_USER'] = 'sql10701793'
-app.config['MYSQL_PASSWORD'] = '8dt1R9KwG7'
-app.config['MYSQL_DB'] = 'sql10701793'
+app.config['MYSQL_HOST'] = 'apprastreador.mysql.uhserver.com'
+app.config['MYSQL_USER'] = 'marcaralho'
+app.config['MYSQL_PASSWORD'] = 'pickup-2007'
+app.config['MYSQL_DB'] = 'apprastreador'
 mysql = MySQL(app)
 
 @app.route('/')
@@ -14,9 +14,9 @@ def hello_world():
 
 @app.route('/getPets', methods=['GET'])
 def getPets():
-    idDono = request.args.get('idDono')
+    IDdono = request.args.get('IDdono')
     cur = mysql.connection.cursor()
-    cur.execute("""SELECT * from Pets WHERE idDono='""" + str(idDono) + """'""")
+    cur.execute("""SELECT * from pet WHERE IDdono_pet='""" + str(IDdono) + """'""")
     rv = cur.fetchall()
     return jsonify(rv)
 
@@ -26,22 +26,31 @@ def Login():
     senha = request.args.get('senha')
     
     cur = mysql.connection.cursor()
-    cur.execute("""SELECT * from Usuarios WHERE email='""" + str(email) + """' AND  senha='""" + str(senha) + """'""")
+    cur.execute("""SELECT * from usuario WHERE email='""" + str(email) + """' AND  senha='""" + str(senha) + """'""")
     user = cur.fetchone()
     return jsonify(user)
 
 @app.route('/cadastro', methods=['POST'])
 def Cadastro():
     nome = request.args.get('nome')
-    endereco = request.args.get('endereco')
-    cep = request.args.get('cep')
-    email = request.args.get('email')
+    Raio = request.args.get('raio')
+    Notifica = request.args.get('notf')
+    Email = request.args.get('email')
     senha = request.args.get('senha')
     
     cur = mysql.connection.cursor()
-    cur.execute("""INSERT INTO Usuarios VALUES ('""" + str(nome) + """','""" + str(endereco) + """','""" + str(cep) + """','""" + str(email)+ """','""" + str(senha)+ """')""")
+    cur.execute("""INSERT INTO usuario VALUES ('null""" + str(nome) + """','""" + str(Email) + """','""" + str(senha) + """','""" + str(Raio)+ """','""" + str(Notifica)+ """')""")
     return jsonify("Cadastro concluído")
+
+@app.route('/historico', methods=['POST'])
+def Historico():
+    idPet = request.args.get('idPet')
+    data = request.args.get('idPet')
+
+    cur = mysql.connection.cursor()
+    cur.execute("""SELECT * from localiza WHERE IDpet_local='""" + str(idPet) + """AND DATE(Data_hora)='"""+ str(data) +"""'""")
+    historyData = cur.fetchall()
+    return jsonify(historyData)
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
