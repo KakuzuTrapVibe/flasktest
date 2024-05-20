@@ -42,7 +42,7 @@ def Cadastro():
     cur.execute("""INSERT INTO usuario VALUES ('null""" + str(nome) + """','""" + str(Email) + """','""" + str(senha) + """','""" + str(Raio)+ """','""" + str(Notifica)+ """')""")
     return jsonify("Cadastro concluído")
 
-@app.route('/historico', methods=['POST'])
+@app.route('/historico', methods=['GET'])
 def Historico():
     idPet = request.args.get('idPet')
     data = request.args.get('data')
