@@ -39,16 +39,26 @@ def login():
         return jsonify({'status': 'error', 'message': 'Invalid email or password'}), 401
 
 @app.route('/cadastro', methods=['POST'])
-def Cadastro():
-    nome = request.args.get('nome')
-    Raio = request.args.get('raio')
-    Notifica = request.args.get('notf')
-    Email = request.args.get('email')
-    senha = request.args.get('senha')
+def cadastro():
+    data = request.get_json()
+    nome = data.get('nome')
+    raio = data.get('raio')
+    notifica = data.get('notifica')
+    email = data.get('email')
+    senha = data.get('senha')
     
-    cur = mysql.connection.cursor()
-    cur.execute("""INSERT INTO usuario VALUES ('null""" + str(nome) + """','""" + str(Email) + """','""" + str(senha) + """','""" + str(Raio)+ """','""" + str(Notifica)+ """')""")
-    return jsonify("Cadastro concluído")
+    if not all([nome, raio, notifica, email, senha]):
+        return jsonify({'status': 'error', 'message': 'All fields are required'}), 400
+    
+    try:
+        cur = mysql.connection.cursor()
+        query = "INSERT INTO usuario (nome, email, senha, raio, notifica) VALUES (%s, %s, %s, %s, %s)"
+        cur.execute(query, (nome, email, senha, raio, notifica))
+        mysql.connection.commit()
+        return jsonify({'status': 'Success', 'message': 'Cadastro concluído'}), 201
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 
 @app.route('/historico', methods=['GET'])
 def Historico():
