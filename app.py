@@ -21,14 +21,22 @@ def getPets():
     return jsonify(rv)
 
 @app.route('/login', methods=['GET'])
-def Login():
+def login():
     email = request.args.get('email')
     senha = request.args.get('senha')
-    
+
+    if not email or not senha:
+        return jsonify({'status': 'error', 'message': 'Email and password are required'}), 400
+
     cur = mysql.connection.cursor()
-    cur.execute("""SELECT * from usuario WHERE email='""" + str(email) + """' AND  senha='""" + str(senha) + """'""")
+    query = "SELECT * FROM usuario WHERE email=%s AND senha=%s"
+    cur.execute(query, (email, senha))
     user = cur.fetchone()
-    return jsonify(user)
+
+    if user:
+        return jsonify({'status': 'Success', 'user': user})
+    else:
+        return jsonify({'status': 'error', 'message': 'Invalid email or password'}), 401
 
 @app.route('/cadastro', methods=['POST'])
 def Cadastro():
