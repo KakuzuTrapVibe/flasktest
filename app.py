@@ -46,7 +46,7 @@ def cadastroPet():
     Animal = data.get('Animal')
     Raio_seguranca = data.get('Raio_seguranca')
     
-    if not all([nome, raio, notifica, email, senha]):
+    if not all([idDono, Nome_pet, Animal, Raio_seguranca]):
         return jsonify({'status': 'error', 'message': 'All fields are required'}), 400
     
     try:
