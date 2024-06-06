@@ -20,21 +20,16 @@ def getPets():
     rv = cur.fetchall()
     return jsonify(rv)
 
-@app.route('/enviarLoc', methods=['POST'])
+app.route('/enviarLoc', methods=['POST'])
 def enviarLoc():
-    idPet = request.args.get('idPet')
-    lat = request.args.get('lat')
-    long = request.args.get('long')
-    vel = request.args.get('vel')
+    idPet = request.args.get('nome')
+    lat = request.args.get('raio')
+    long = request.args.get('notf')
+    vel = request.args.get('email')
     
-    try:
-        cur = mysql.connection.cursor()
-        query = f"INSERT INTO localiza (IDlocal, IDpet_local, Latitude, Logitude, Velocidade, Data_hora) VALUES (NULL, {str(idPet)},{str(lat)}, {str(long)}, {str(vel)}, 'CURRENT_TIMESTAMP')"
-        cur.execute(query)
-        mysql.connection.commit()
-        return jsonify({'status': 'Success', 'message': 'Cadastro do pet concluído'}), 201
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 500
+    cur = mysql.connection.cursor()
+    cur.execute("""INSERT INTO usuario VALUES ('null""" + str(idPet) + """','""" + str(lat) + """','""" + str(senha) + """','""" + str(long)+ """','""" + str(vel)+ """, CURRENT_TIMESTAMP')""")
+    return jsonify("Cadastro concluído")
 
 @app.route('/login', methods=['GET'])
 def login():
