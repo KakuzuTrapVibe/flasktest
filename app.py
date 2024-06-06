@@ -39,7 +39,7 @@ def login():
         return jsonify({'status': 'error', 'message': 'Invalid email or password'}), 401
 
 @app.route('/cadastroPet', methods=['POST'])
-def cadastro():
+def cadastroPet():
     data = request.get_json()
     idDono = data.get('idDono')
     Nome_pet = data.get('Nome_pet ')
