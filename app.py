@@ -51,8 +51,8 @@ def cadastro():
     
     try:
         cur = mysql.connection.cursor()
-        query = "INSERT INTO usuario (IDdono_pet, Nome_pet, Animal, Raio_seguranca) VALUES (%s, %s, %s, %s, %s)"
-        cur.execute(query, (nome, email, senha, raio, notifica))
+        query = "INSERT INTO usuario (IDdono_pet, Nome_pet, Animal, Raio_seguranca) VALUES (%s, %s, %s, %s)"
+        cur.execute(query, (idDono, Nome_pet, Animal, Raio_seguranca))
         mysql.connection.commit()
         return jsonify({'status': 'Success', 'message': 'Cadastro do pet concluído'}), 201
     except Exception as e:
