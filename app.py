@@ -12,25 +12,6 @@ mysql = MySQL(app)
 def hello_world():
     return 'Hello, World!'
 
-
-@app.route('/cadastroPet', methods=['POST'])
-def cadastroPet():
-    data = request.get_json()
-    nome_pet = data.get('nome_pet')
-    animal = data.get('animal')
-    
-    if not all([nome, animal]):
-        return jsonify({'status': 'error', 'message': 'All fields are required'}), 400
-    
-    try:
-        cur = mysql.connection.cursor()
-        query = "INSERT INTO usuario (nome, animal) VALUES (%s, %s)"
-        cur.execute(query, (nome, animal))
-        mysql.connection.commit()
-        return jsonify({'status': 'Success', 'message': 'Cadastro concluído'}), 201
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 500
-        
 @app.route('/getPets', methods=['GET'])
 def getPets():
     IDdono = request.args.get('IDdono')
@@ -56,6 +37,26 @@ def login():
         return jsonify({'status': 'Success', 'user': user})
     else:
         return jsonify({'status': 'error', 'message': 'Invalid email or password'}), 401
+
+@app.route('/cadastroPet', methods=['POST'])
+def cadastro():
+    data = request.get_json()
+    idDono = data.get('idDono')
+    Nome_pet = data.get('Nome_pet ')
+    Animal = data.get('Animal')
+    Raio_seguranca = data.get('Raio_seguranca')
+    
+    if not all([nome, raio, notifica, email, senha]):
+        return jsonify({'status': 'error', 'message': 'All fields are required'}), 400
+    
+    try:
+        cur = mysql.connection.cursor()
+        query = "INSERT INTO usuario (IDdono_pet, Nome_pet, Animal, Raio_seguranca) VALUES (%s, %s, %s, %s, %s)"
+        cur.execute(query, (nome, email, senha, raio, notifica))
+        mysql.connection.commit()
+        return jsonify({'status': 'Success', 'message': 'Cadastro do pet concluído'}), 201
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/cadastro', methods=['POST'])
 def cadastro():
