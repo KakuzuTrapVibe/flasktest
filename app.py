@@ -20,6 +20,21 @@ def getPets():
     rv = cur.fetchall()
     return jsonify(rv)
 
+@app.route('/enviarLoc', methods=['GET'])
+def enviarLoc():
+    idPet = request.args.get('idPet')
+    lat = request.args.get('lat')
+    long = request.args.get('long')
+    vel = request.args.get('vel')
+    
+    cur = mysql.connection.cursor()
+    query = "INSERT INTO localiza (IDlocal, IDpet_local, Latitude, Logitude, Velocidade, Data_hora) VALUES (NULL, idPet, lat, long, vel, CURRENT_TIMESTAMP)"
+    cur.execute(query)
+    mysql.connection.commit()
+    return jsonify({'status': 'Success', 'message': 'Cadastro do pet concluído'}), 201
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 @app.route('/login', methods=['GET'])
 def login():
     email = request.args.get('email')
