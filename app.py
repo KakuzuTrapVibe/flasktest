@@ -12,6 +12,25 @@ mysql = MySQL(app)
 def hello_world():
     return 'Hello, World!'
 
+
+@app.route('/cadastroPet', methods=['POST'])
+def cadastro():
+    data = request.get_json()
+    nome_pet = data.get('nome_pet')
+    animal = data.get('animal')
+    
+    if not all([nome, animal]):
+        return jsonify({'status': 'error', 'message': 'All fields are required'}), 400
+    
+    try:
+        cur = mysql.connection.cursor()
+        query = "INSERT INTO usuario (nome, animal) VALUES (%s, %s)"
+        cur.execute(query, (nome, animal))
+        mysql.connection.commit()
+        return jsonify({'status': 'Success', 'message': 'Cadastro concluído'}), 201
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+        
 @app.route('/getPets', methods=['GET'])
 def getPets():
     IDdono = request.args.get('IDdono')
