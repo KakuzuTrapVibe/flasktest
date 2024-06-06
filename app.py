@@ -14,7 +14,7 @@ def hello_world():
 
 
 @app.route('/cadastroPet', methods=['POST'])
-def cadastro():
+def cadastroPet():
     data = request.get_json()
     nome_pet = data.get('nome_pet')
     animal = data.get('animal')
