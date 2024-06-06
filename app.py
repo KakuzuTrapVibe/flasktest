@@ -28,7 +28,7 @@ def enviarLoc():
     vel = request.args.get('email')
     
     cur = mysql.connection.cursor()
-    cur.execute("""INSERT INTO usuario VALUES ('null""" + str(idPet) + """','""" + str(lat) + """','""" + str(senha) + """','""" + str(long)+ """','""" + str(vel)+ """, CURRENT_TIMESTAMP')""")
+    cur.execute("""INSERT INTO usuario VALUES (NULL,""" + str(idPet) + """','""" + str(lat) + """','""" + str(senha) + """','""" + str(long)+ """','""" + str(vel)+ """, CURRENT_TIMESTAMP')""")
     return jsonify("Cadastro concluído")
 
 @app.route('/login', methods=['GET'])
