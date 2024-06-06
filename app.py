@@ -20,7 +20,7 @@ def getPets():
     rv = cur.fetchall()
     return jsonify(rv)
 
-@app.route('/enviarLoc', methods=['GET'])
+@app.route('/enviarLoc', methods=['POST'])
 def enviarLoc():
     idPet = request.args.get('idPet')
     lat = request.args.get('lat')
