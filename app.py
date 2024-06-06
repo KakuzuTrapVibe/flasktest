@@ -27,11 +27,12 @@ def enviarLoc():
     long = request.args.get('long')
     vel = request.args.get('vel')
     
-    cur = mysql.connection.cursor()
-    query = "INSERT INTO localiza (IDlocal, IDpet_local, Latitude, Logitude, Velocidade, Data_hora) VALUES (NULL, idPet, lat, long, vel, CURRENT_TIMESTAMP)"
-    cur.execute(query)
-    mysql.connection.commit()
-    return jsonify({'status': 'Success', 'message': 'Cadastro do pet concluído'}), 201
+    try:
+        cur = mysql.connection.cursor()
+        query = "INSERT INTO localiza (IDlocal, IDpet_local, Latitude, Logitude, Velocidade, Data_hora) VALUES (NULL, idPet, lat, long, vel, CURRENT_TIMESTAMP)"
+        cur.execute(query)
+        mysql.connection.commit()
+        return jsonify({'status': 'Success', 'message': 'Cadastro do pet concluído'}), 201
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
