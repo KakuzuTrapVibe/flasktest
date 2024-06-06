@@ -29,7 +29,7 @@ def enviarLoc():
     
     try:
         cur = mysql.connection.cursor()
-        query = "INSERT INTO localiza (IDlocal, IDpet_local, Latitude, Logitude, Velocidade, Data_hora) VALUES (NULL, idPet, lat, long, vel, CURRENT_TIMESTAMP)"
+        query = f"INSERT INTO localiza (IDlocal, IDpet_local, Latitude, Logitude, Velocidade, Data_hora) VALUES (NULL, {str(idPet)},{str(lat)}, {str(long)}, {str(vel)}, 'CURRENT_TIMESTAMP')"
         cur.execute(query)
         mysql.connection.commit()
         return jsonify({'status': 'Success', 'message': 'Cadastro do pet concluído'}), 201
