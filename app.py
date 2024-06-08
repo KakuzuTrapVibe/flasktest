@@ -107,13 +107,13 @@ def Historico():
     return jsonify(historyData)
     
 @app.route('/lastLoc', methods=['GET'])
-def Historico():
+def lastLoc():
     
     idPet = request.args.get('idPet')
-    data = request.args.get('data')
 
     cur = mysql.connection.cursor()
-    cur.execute("""SELECT * from localiza WHERE IDpet_local='""" + str(idPet) + """' AND DATE(Data_hora)='"""+ str(data) +""" ORDER BY Data_Hora ASCENDING'""")
+    query = "SELECT * from localiza WHERE IDpet_local='1' ORDER BY Data_Hora DESC"
+    cur.execute(query)
     historyData = cur.fetchone()
     return jsonify(historyData)
 
