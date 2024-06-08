@@ -16,21 +16,26 @@ def hello_world():
 def getPets():
     IDdono = request.args.get('IDdono')
     cur = mysql.connection.cursor()
-    cur.execute("""SELECT * from pet WHERE IDdono_pet='""" + str(IDdono) + """'""")
+    cur.execute("""SELECT Nome_pet from pet WHERE IDdono_pet='""" + str(IDdono) + """'""")
     rv = cur.fetchall()
     return jsonify(rv)
 
-@app.route('/enviarLoc', methods=['POST'])
+@app.route('/enviarLoc', methods=['GET', 'POST'])
 def enviarLoc():
-    idPet = request.args.get('nome')
-    lat = request.args.get('raio')
-    long = request.args.get('notf')
-    vel = request.args.get('email')
+    idPet = request.args.get('idPet')
+    lat = request.args.get('lat')
+    long = request.args.get('long')
+    vel = request.args.get('vel')
     
-    cur = mysql.connection.cursor()
-    cur.execute("""INSERT INTO usuario VALUES (NULL,""" + str(idPet) + """','""" + str(lat) + """','""" + str(senha) + """','""" + str(long)+ """','""" + str(vel)+ """, CURRENT_TIMESTAMP')""")
-    return jsonify("Cadastro concluído")
-
+    try:
+        cur = mysql.connection.cursor()
+        query = "INSERT INTO localiza VALUES (NULL, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
+        cur.execute(query, (idPet, lat, long, vel))
+        mysql.connection.commit()
+        return jsonify({'status': 'Success', 'message': 'Cadastro concluído'}), 201
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+    
 @app.route('/login', methods=['GET'])
 def login():
     email = request.args.get('email')
